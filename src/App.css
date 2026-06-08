@@ -62,7 +62,6 @@
     grid-template-columns: 1fr;
   }
   .ad-side {
-    min-height: 100px;
     position: static !important;
   }
 }
@@ -873,6 +872,28 @@ html:lang(zh) .logo-text {
 .ad-inline {
   min-height: 90px;
   margin-top: 16px;
+}
+
+/* モバイル：広告枠は残したまま、高さ・余白だけ圧縮して上部の占有を減らす。
+   ※ base の .ad-* 定義より後ろに置くこと（同じ詳細度なら後勝ち＝確実に上書きされる）。 */
+@media (max-width: 900px) {
+  .ad-banner {
+    min-height: 56px;
+  }
+  .ad-side {
+    min-height: 56px;
+  }
+  .ad-inline {
+    min-height: 70px;
+    margin-top: 12px;
+  }
+  .ad-slot {
+    padding: 8px 12px;
+  }
+  /* プレースホルダの補足テキストはモバイルでは省いて高さを節約（実広告には影響なし） */
+  .ad-slot-note {
+    display: none;
+  }
 }
 
 /* ───────── 下部の戻る／次へ ───────── */
