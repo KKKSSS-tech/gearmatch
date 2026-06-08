@@ -1,0 +1,22 @@
+# Netlify 設定ファイル。GitHub 連携で接続すると自動でこの内容が使われる。
+# 環境変数（VITE_ADSENSE_CLIENT 等）は Netlify 管理画面の Site settings > Environment variables で設定する。
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA フォールバック：存在しないパスへのアクセスも index.html を返す（クライアント側ルーティング用）。
+# status = 200 にすることでリダイレクトではなく「書き換え」になり、URL がそのまま保たれる。
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 任意のセキュリティヘッダ（vercel.json と同等）。
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "browsing-topics=(), geolocation=(), microphone=(), camera=()"

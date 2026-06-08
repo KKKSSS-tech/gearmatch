@@ -1,0 +1,30 @@
+:root {
+  /* フォントシステム（レビュー反映）：表示=Sora / 本文=Inter、CJKは専用Webフォントへフォールバック */
+  --font-display: 'Sora', 'Zen Kaku Gothic New', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
+  --font-ui: 'Inter', 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic',
+    'Noto Sans KR', 'Noto Sans SC', Meiryo, system-ui, sans-serif;
+
+  font-family: var(--font-ui);
+  color: #1d1d1f;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv11', 'ss01'; /* Inter：一階建ての a/g で親しみやすく */
+}
+
+/* ユーザーの「文字サイズ」設定（ブラウザ/OSの標準16px）を尊重。px固定で上書きしない。 */
+html {
+  font-size: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #f5f5f7;
+  color: #1d1d1f;
+  font-weight: 400;
+}

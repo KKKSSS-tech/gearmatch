@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gearmatchworld.org/sitemap.xml

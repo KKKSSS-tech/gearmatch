@@ -1,0 +1,1180 @@
+/* ============================================================
+   案②：クリーン・ライト（Apple／ソニー製品ページ風）
+   白基調・余白多め・極細の境界線・アクセントは1色（ブルー）。
+   ============================================================ */
+
+:root {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --surface-2: #f5f5f7;
+  --text: #1d1d1f;
+  --text-2: #515154;
+  --text-3: #6e6e73;
+  --line: #e3e3e8;
+  --line-strong: #d2d2d7;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-tint: rgba(0, 113, 227, 0.08);
+  --accent-text: #0067cf; /* 小さなアクセント文字用に少し濃いめ（同色相・AA対応） */
+  --radius-card: 18px;
+  --radius-ctrl: 12px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+  /* タイプスケール（一定比率で統一）。文字サイズはユーザー設定に追従するよう rem 化。 */
+  --fs-display: 2.125rem; /* 34px */
+  --fs-wordmark: clamp(1.75rem, 5.2vw, 2.5rem); /* 28px〜40px：ブランド名だけ大きく（--fs-displayから分離） */
+  --fs-h2: 1.375rem; /* 22px */
+  --fs-title: 1.0625rem; /* 17px */
+  --fs-body: 0.9375rem; /* 15px */
+  --fs-sm: 0.8125rem; /* 13px */
+  --fs-xs: 0.75rem; /* 11px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+}
+
+/* ページ全体のラッパー（広告も含めた一番外側） */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 左サイド広告 ｜ 中央コンテンツ ｜ 右サイド広告 の3カラム */
+.layout {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) 160px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* タブレット〜小型ノート：両サイド広告は残しつつ細くして、中央が潰れないように */
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: 120px minmax(0, 1fr) 120px;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .ad-side {
+    min-height: 100px;
+    position: static !important;
+  }
+}
+
+/* アプリ本体（中央カラム） */
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+/* ───────── ヘッダー（ロゴ＋進捗） ───────── */
+.app-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: var(--fs-wordmark);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0 0 8px;
+}
+.logo-icon {
+  color: var(--accent);
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+}
+.logo-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: inherit;
+  animation: fadeIn 0.3s ease; /* 言語切替フェードは維持 */
+}
+/* CJK は負トラッキング解除。日本語は900（Zen Kaku 900）、韓中は700（Noto上限） */
+html:lang(ja) .app-header h1,
+html:lang(ko) .app-header h1,
+html:lang(zh) .app-header h1 {
+  letter-spacing: normal;
+}
+html:lang(ja) .logo-text {
+  font-weight: 900;
+}
+html:lang(ko) .logo-text,
+html:lang(zh) .logo-text {
+  font-weight: 700;
+}
+.progress {
+  color: var(--text-3);
+  font-size: 0.8125rem; /* 13px */
+  margin: 0;
+  font-weight: 500;
+}
+.progress-bar {
+  height: 4px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.progress-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+/* 選択の見直しバー（クリックでそのステップへ戻る） */
+.summary-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+.summary-pill {
+  font-size: 0.75rem; /* 12px */
+  color: var(--text-2);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: 0.15s;
+  /* 想定外に長いラベル（巨大な予算額など）でバーが崩れないよう、はみ出しは…で省略 */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.summary-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.summary-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ───────── 中央の「画面」エリア ───────── */
+.step-area {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 36px 32px;
+  min-height: 240px;
+  box-shadow: var(--shadow-md);
+}
+.step-area h2 {
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+/* 見出しはステップ切替時にプログラムでフォーカスを受けるだけなので、見た目のリングは出さない */
+.step-area h2:focus {
+  outline: none;
+}
+.placeholder {
+  color: var(--text-2);
+  font-size: 0.9375rem; /* 15px */
+}
+/* 結果ゼロのときの空状態（一文だけだと行き止まりに見えるので、絵＋説明＋やり直しボタン） */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 44px 20px;
+}
+.empty-state-icon {
+  color: var(--text-3);
+}
+.empty-state-text {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 0.9375rem; /* 15px */
+  max-width: 30em;
+}
+.empty-state-cta {
+  margin-top: 4px;
+  padding: 11px 22px;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-ctrl);
+  color: #fff;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.empty-state-cta:hover {
+  background: var(--accent-hover);
+}
+
+/* タッチ端末では向き・画面幅に関わらず、主要な操作を最低44pxの“押せる大きさ”にする */
+@media (pointer: coarse) {
+  .chip,
+  .nav button,
+  .summary-pill,
+  .sort-select,
+  .empty-state-cta,
+  .price-go,
+  .price-summary,
+  .research-skip,
+  .consent-accept,
+  .consent-decline {
+    min-height: 44px;
+  }
+  .modal-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /* 店舗リンク（収益導線）は縦中央に文字を置いて、44px内でも押しやすく */
+  .price-go {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+.hint {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--accent-text);
+  margin: 18px 0 0;
+  font-weight: 500;
+}
+/* 設問の下にそえる補足（例：マウントはおまかせでOK）。控えめだが読める大きさ。 */
+.field-help {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-2);
+  margin: -10px 0 22px;
+}
+/* 結果上部の注意書き（全マウント混在・こだわり予算内なし など）。目立つが派手すぎない。 */
+.results-note {
+  font-size: 0.84375rem; /* 13.5px */
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-ctrl);
+  padding: 10px 14px;
+  margin: 0 0 16px;
+}
+
+/* ───────── サイトフッター（プライバシー入口＋免責） ───────── */
+.site-footer {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+.footer-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent-text);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.footer-link:hover {
+  color: var(--accent);
+}
+.footer-note {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ───────── クッキー/広告 同意バー ───────── */
+.consent-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--surface);
+  border-top: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+  padding: 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 16px;
+}
+.consent-text {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text);
+  max-width: 60ch;
+}
+.consent-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent-text);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+}
+.consent-actions {
+  display: flex;
+  gap: 8px;
+}
+.consent-accept,
+.consent-decline {
+  padding: 8px 18px;
+  border-radius: var(--radius-ctrl);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.consent-accept {
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+}
+.consent-accept:hover {
+  background: var(--accent-hover);
+}
+.consent-decline {
+  background: var(--surface);
+  color: var(--text-2);
+  border: 1px solid var(--line-strong);
+}
+
+/* ───────── モーダル（プライバシーポリシー等） ───────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  max-width: 640px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 28px 28px 32px;
+  box-shadow: var(--shadow-lg);
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-3);
+  cursor: pointer;
+}
+.modal-close:hover {
+  color: var(--text);
+}
+.modal-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+}
+.modal-body {
+  color: var(--text-2);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.modal-body h3 {
+  color: var(--text);
+  font-size: 0.9375rem;
+  margin: 18px 0 4px;
+}
+.modal-body p {
+  margin: 0 0 8px;
+}
+
+/* ───────── intro：多言語キャッチ＋言語選択 ───────── */
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.intro-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeIn 0.3s ease;
+  min-height: 6em; /* 言語切替時のレイアウトシフト防止（最長言語に合わせ） */
+}
+.intro-lead {
+  font-size: 1.375rem; /* 22px */
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--text);
+}
+/* 響かせたい複数マーケット＝静的・低強調のチップ（言語チップと混同させないため hover/active なし） */
+.intro-audiences {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.audience-chip {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+.intro-langs-label {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+/* ───────── 質問のまとまり（ChipGroup） ───────── */
+.group {
+  margin-bottom: 26px;
+}
+.group:last-child {
+  margin-bottom: 0;
+}
+.group-label {
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--text);
+}
+
+/* 選択肢のチップ（OptionChip の見た目） */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.chip {
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  transition: 0.15s;
+}
+.chip:hover {
+  border-color: var(--text-3);
+  background: var(--surface-2);
+}
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 700; /* 色だけに頼らない選択キュー（色覚特性・低コントラストでも分かる） */
+}
+.chip.active:hover {
+  background: var(--accent-hover);
+}
+/* 複数選択チップ：✓印の置き場所（選択中だけ表示）。色に依存しない選択の手がかり。 */
+.chip-multi .chip-check {
+  display: inline-block;
+  width: 0;
+  margin-right: 0;
+  overflow: hidden;
+  font-weight: 700;
+  transition: width 0.12s ease, margin-right 0.12s ease;
+}
+.chip-multi.active .chip-check {
+  width: 1em;
+  margin-right: 4px;
+}
+
+/* 予算の自由入力 */
+.budget-custom {
+  margin-bottom: 26px;
+}
+.budget-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border-radius: var(--radius-ctrl);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem; /* 16px */
+  margin-top: 8px;
+}
+.budget-input::placeholder {
+  color: var(--text-3);
+}
+
+/* キーボード操作時のフォーカス表示（アクセシビリティ） */
+.chip:focus-visible,
+.nav button:focus-visible,
+.price-go:focus-visible,
+.budget-input:focus-visible,
+.sort-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ───────── 結果：並び替えツールバー ───────── */
+.results {
+  display: grid;
+  gap: 16px;
+}
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.sort-label {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-2);
+  font-weight: 500;
+}
+.sort-select {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 8px 12px;
+  padding-right: 30px;
+  font-size: 0.8125rem; /* 13px */
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+/* ───────── 結果カード ───────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+.card.top {
+  border-color: var(--line);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(var(--accent-tint), var(--accent-tint)), var(--surface);
+}
+
+/* カード上段：写真／情報／レーダー */
+.card-main {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.card-photo {
+  flex: 0 0 100px;
+  width: 100px;
+  height: 100px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  overflow: hidden;
+}
+.card-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  padding: 6px;
+}
+.card-photo-icon {
+  color: var(--text-3);
+}
+.card-photo-brand {
+  font-size: 0.75rem; /* 10px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+  color: var(--text-3);
+  font-weight: 600;
+}
+.card-info {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.card-head > div:first-child {
+  min-width: 0;
+}
+.card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.rank-badge {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 6px;
+}
+.brand {
+  color: var(--text-2);
+  font-size: 0.8125rem; /* 13px */
+  margin-top: 4px;
+}
+.price {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+}
+.price small {
+  display: block;
+  color: var(--text-3);
+  font-weight: 400;
+  font-size: 0.75rem; /* 11px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.tag {
+  font-size: 0.75rem; /* 11px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 3px 9px;
+  border-radius: 7px;
+}
+.why {
+  font-size: 0.8125rem; /* 13px */
+  margin-top: 12px;
+  color: var(--text-2);
+}
+
+/* レーダーチャート */
+.card-radar {
+  flex: 0 0 204px;
+  text-align: center;
+}
+.card-radar-title {
+  font-size: 0.75rem; /* 11px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+  color: var(--text-3);
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+.radar {
+  display: block;
+  margin: 0 auto;
+  overflow: visible;
+  width: 176px;
+  max-width: 100%;
+}
+.radar-ring {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.radar-axis {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.radar-area {
+  fill: rgba(0, 113, 227, 0.08);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+.radar-label {
+  fill: var(--text-2);
+  /* SVG内テキスト。10px→12px相当に底上げ。レーダーは r=size/2-42 で42単位のラベル余白を確保しており、
+     20%増でも見切れない。同データは .radar-values にも数値併記済みで安全。 */
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+/* レーダー値の数値併記（拡大鏡・低視力ユーザー向け。チャートと同じ情報をテキストでも提供） */
+.radar-values {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 10px;
+  font-size: 0.75rem; /* 12px */
+  text-align: left;
+}
+.radar-values li {
+  display: contents;
+}
+.radar-values li span:first-child {
+  color: var(--text-2);
+}
+.radar-values li span:last-child {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* 結果カード：複数店舗の価格比較表 */
+.price-table {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.price-table-title {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.price-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.price-row.cheapest {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+.price-store {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.cheapest-badge {
+  font-size: 0.75rem; /* 10px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-tint);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.price-amount {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 700;
+  white-space: nowrap;
+}
+.price-go {
+  font-size: 0.75rem; /* 12px */
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--line-strong);
+  padding: 5px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  transition: 0.15s;
+}
+.price-go:hover {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+.price-disclaimer {
+  font-size: 0.75rem; /* 11px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+  color: var(--text-3);
+  margin: 12px 0 0;
+}
+
+/* ───────── 広告の枠（多めに配置・ライト調） ───────── */
+.ad-slot {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--surface-2);
+}
+.ad-slot-label {
+  font-size: 0.75rem; /* 11px → 12px相当に底上げ（極小ラベルの最小可読サイズ確保） */
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.ad-slot-note {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.ad-banner {
+  min-height: 100px;
+}
+.ad-side {
+  min-height: 600px;
+  position: sticky;
+  top: 20px;
+}
+.ad-inline {
+  min-height: 90px;
+  margin-top: 16px;
+}
+
+/* ───────── 下部の戻る／次へ ───────── */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.nav button {
+  flex: 1;
+  padding: 14px;
+  border-radius: var(--radius-ctrl);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9375rem; /* 15px */
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.nav button:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.nav button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.nav button.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+/* 進めない状態：薄くするだけだと文字が読めず「押せそうなのに無反応」に見えるので、
+   はっきり“無効”に見える配色（読める明度のグレー＋枠）にする。primary の青も上書きする。 */
+.nav button:disabled,
+.nav button[aria-disabled="true"] {
+  cursor: not-allowed;
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+  color: var(--text-2);
+  box-shadow: none;
+}
+
+/* ───────── リサーチ中ローディング ───────── */
+.researching {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 56px 20px;
+  text-align: center;
+  color: var(--text-2);
+  font-size: 0.9375rem; /* 15px */
+}
+.researching p {
+  margin: 0;
+  font-weight: 500;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.research-bar {
+  width: 240px;
+  max-width: 80%;
+  height: 5px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.research-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+/* 演出をスキップして結果へ（待てない人向け。控えめなテキストボタン） */
+.research-skip {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.research-skip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.research-skip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ───────── スマホ調整 ───────── */
+@media (max-width: 560px) {
+  .step-area {
+    padding: 24px 18px;
+  }
+  /* 長い機種名でも崩れないよう、見出しと価格を縦に */
+  .card-head {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .price {
+    text-align: left;
+  }
+  .card-radar {
+    flex-basis: 100%;
+  }
+  .price-row {
+    grid-template-columns: 1fr auto;
+  }
+  .price-store {
+    flex-wrap: wrap;
+  }
+  /* 送客リンクは指で押しやすい44pxに（収益動線なので最優先） */
+  .price-go {
+    grid-column: 1 / -1;
+    text-align: center;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* 選択肢チップも指で押しやすい44pxに（主要操作なので） */
+  .chip {
+    padding: 12px 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .summary-pill {
+    padding: 9px 14px;
+    min-height: 40px;
+  }
+  .sort-select {
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 1rem; /* 16px */
+  }
+  .intro-lead {
+    font-size: 1.1875rem; /* 19px */
+  }
+}
+
+/* ───────── 価格比較を折りたたみ（既定で閉じ＝スクロール削減） ───────── */
+details.price-table > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 700;
+  color: var(--text);
+}
+details.price-table > summary::-webkit-details-marker {
+  display: none;
+}
+.price-summary-title {
+  font-weight: 700;
+  color: var(--text);
+  margin-right: 4px;
+}
+.price-summary-cheapest {
+  font-weight: 600;
+  color: var(--text-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.price-summary-chevron {
+  margin-left: auto;
+  color: var(--text-3);
+  transition: transform 0.2s;
+  font-size: 0.75rem; /* 12px */
+}
+details.price-table[open] .price-summary-chevron {
+  transform: rotate(180deg);
+}
+details.price-table .price-rows {
+  margin-top: 10px;
+}
+
+/* ───────── ステップ装飾画像（結果以外のページに「クリエイター感」を） ───────── */
+.step-hero {
+  height: 168px;
+  margin: -36px -32px 24px;
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface-2);
+}
+.step-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.step-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0) 45%, #ffffff 100%);
+}
+.step-hero-fallback::after {
+  display: none;
+}
+@media (max-width: 560px) {
+  .step-hero {
+    height: 120px;
+    margin: -24px -18px 18px;
+  }
+}
+
+/* ロゴをクリックでホームへ（見た目はテキストのまま） */
+.logo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  line-height: 1;
+}
+.logo-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+.logo-button:hover .logo-text {
+  filter: brightness(1.08);
+}
+
+/* intro スライドショー（クロスフェード） */
+.step-hero .slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.step-hero .slide-on {
+  opacity: 1;
+}
+
+/* 数字を等幅に（価格列がそろう＝プロっぽさ） */
+.price,
+.price-amount,
+.price-go,
+.progress,
+.budget-input {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* #1 のランクは🏆絵文字をやめ、フラットなアクセントのピルに */
+.card.top .rank-badge {
+  background: var(--accent);
+  color: #fff;
+  padding: 2px 9px;
+  border-radius: 999px;
+  margin-right: 8px;
+}
+
+/* モーション控えめ設定を尊重 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
