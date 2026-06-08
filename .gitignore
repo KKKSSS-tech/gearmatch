@@ -30,3 +30,6 @@ dist-ssr
 
 # バックアップ/一時ファイル
 *.bak
+
+# Local Claude Code preview/dev config
+.claude/
