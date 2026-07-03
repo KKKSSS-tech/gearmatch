@@ -199,13 +199,25 @@ async function commonsStrict(name) {
   return null
 }
 
+// ---- 拒否リスト：QA目視で「一致器は誤ファイルを掴む」と確定した製品 ----
+// Wikipedia/Commons に正しい単独画像が無く、類似製品（無印版・別焦点距離）の
+// 画像を高信頼判定してしまう。空欄のままプレースホルダ表示が正。
+const NEVER_MATCH = new Set([
+  'Sony α7C R', // 無印α7Cの写真を掴む（2026-06-08 QA・2026-07-04 再発確認）
+  'NIKKOR Z 400mm f/4.5 VR S', // Z 100-400mmズームの写真を掴む（同上）
+  'Leica SL3', // SL3-Sの写真を掴む（2026-06-08 QA）
+  'Sony FE 600mm F4 GM OSS', // 200-600mm+100-400mmの写真を掴む（2026-07-04）
+  'Sony FE 70-200mm F2.8 GM OSS II', // F4 Macro G II の写真を掴む（2026-07-04）
+  'Canon EF 24-70mm F4L IS USM', // EF 11-24mm F4L の写真を掴む（2026-07-04）
+])
+
 // ---- 対象：画像がまだ無い製品だけ ----
 const existingKeys = Object.keys(PRODUCT_IMAGES)
 const have = new Set(existingKeys)
 const targets = [
   ...CAMERAS.map((c) => c.name),
   ...LENSES.map((l) => l.name),
-].filter((name) => !have.has(name))
+].filter((name) => !have.has(name) && !NEVER_MATCH.has(name))
 
 const work = targets.slice(0, LIMIT)
 console.log(
