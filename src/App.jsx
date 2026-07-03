@@ -638,11 +638,22 @@ function App() {
 
           {ad('banner')}
 
-          {/* サイトフッター：プライバシーポリシー等の入口（広告審査の要件でもある）＋免責 */}
+          {/* サイトフッター：読み物ページ・プライバシーポリシーの入口（広告審査の要件でもある）＋免責 */}
           <footer className="site-footer">
-            <button type="button" className="footer-link" onClick={() => setPrivacyOpen(true)}>
-              {t.privacyPolicy}
-            </button>
+            <div className="footer-links">
+              <a className="footer-link" href="/guide.html">
+                {t.guideLink}
+              </a>
+              <a className="footer-link" href="/about.html">
+                {t.aboutLink}
+              </a>
+              <a className="footer-link" href="/faq.html">
+                {t.faqLink}
+              </a>
+              <button type="button" className="footer-link" onClick={() => setPrivacyOpen(true)}>
+                {t.privacyPolicy}
+              </button>
+            </div>
             <p className="footer-note">{t.footerNote}</p>
           </footer>
         </div>

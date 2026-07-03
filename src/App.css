@@ -270,7 +270,7 @@ html:lang(zh) .logo-text {
   margin: 0 0 16px;
 }
 
-/* ───────── サイトフッター（プライバシー入口＋免責） ───────── */
+/* ───────── サイトフッター（読み物・プライバシー入口＋免責） ───────── */
 .site-footer {
   margin-top: 8px;
   padding-top: 16px;
@@ -279,6 +279,12 @@ html:lang(zh) .logo-text {
   flex-direction: column;
   gap: 6px;
   align-items: flex-start;
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  align-items: center;
 }
 .footer-link {
   background: none;
