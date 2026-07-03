@@ -641,13 +641,14 @@ function App() {
           {/* サイトフッター：読み物ページ・プライバシーポリシーの入口（広告審査の要件でもある）＋免責 */}
           <footer className="site-footer">
             <div className="footer-links">
-              <a className="footer-link" href="/guide.html">
+              {/* 読み物ページは ja / en の2言語。日本語以外のUIでは英語版へ */}
+              <a className="footer-link" href={choices.language && choices.language !== 'ja' ? '/en/guide.html' : '/guide.html'}>
                 {t.guideLink}
               </a>
-              <a className="footer-link" href="/about.html">
+              <a className="footer-link" href={choices.language && choices.language !== 'ja' ? '/en/about.html' : '/about.html'}>
                 {t.aboutLink}
               </a>
-              <a className="footer-link" href="/faq.html">
+              <a className="footer-link" href={choices.language && choices.language !== 'ja' ? '/en/faq.html' : '/faq.html'}>
                 {t.faqLink}
               </a>
               <button type="button" className="footer-link" onClick={() => setPrivacyOpen(true)}>
