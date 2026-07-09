@@ -34,6 +34,9 @@ This repository now includes the core OSS maintenance files:
 - [Security Policy](./SECURITY.md)
 - [Code of Conduct](./CODE_OF_CONDUCT.md)
 - [Roadmap](./ROADMAP.md)
+- [Changelog](./CHANGELOG.md)
+- [Data Model](./docs/DATA_MODEL.md)
+- [Project Status](./docs/PROJECT_STATUS.md)
 
 Useful contribution areas include product data corrections, verified product
 images, translation fixes, recommendation scoring tests, accessibility cleanup,
