@@ -1,5 +1,9 @@
 # Gear Match
 
+[![CI](https://github.com/KKKSSS-tech/gearmatch/actions/workflows/ci.yml/badge.svg)](https://github.com/KKKSSS-tech/gearmatch/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
+[![Release](https://img.shields.io/github/v/release/KKKSSS-tech/gearmatch)](https://github.com/KKKSSS-tech/gearmatch/releases)
+
 Gear Match is an open-source React/Vite web app that helps people choose
 cameras and lenses from practical needs: subject, budget, region, shooting
 style, and preferred mount or manufacturer.
