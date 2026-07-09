@@ -1,3 +1,56 @@
+# Gear Match
+
+Gear Match is an open-source React/Vite web app that helps people choose
+cameras and lenses from practical needs: subject, budget, region, shooting
+style, and preferred mount or manufacturer.
+
+- Live app: https://gearmatch-steel.vercel.app
+- Repository: https://github.com/KKKSSS-tech/gearmatch
+- License: MIT
+- Stack: React, Vite, JavaScript, CSS, Vitest, ESLint
+- Locales: Japanese, English, Korean, Simplified Chinese, Traditional Chinese,
+  Spanish, French, German
+- Regions: Japan, US, UK, Germany, Korea, France, Italy, Spain, Australia,
+  Canada, China, Taiwan, Singapore
+
+The project is early-stage, but it is maintained publicly and is being shaped
+into a reusable OSS resource for camera/lens recommendation data, multilingual
+UX, and region-aware store-search routing.
+
+## Why This Exists
+
+Camera buying is hard for beginners because sensor size, mount compatibility,
+budget, used-market condition, autofocus, video specs, and lens ecosystem all
+interact. Gear Match turns those tradeoffs into a guided questionnaire and
+returns explainable recommendations with search links for each supported
+region.
+
+## Open Source Status
+
+This repository now includes the core OSS maintenance files:
+
+- [License](./LICENSE)
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Security Policy](./SECURITY.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Roadmap](./ROADMAP.md)
+
+Useful contribution areas include product data corrections, verified product
+images, translation fixes, recommendation scoring tests, accessibility cleanup,
+and documentation for the data model.
+
+## Development
+
+```bash
+npm ci
+npm run dev
+npm run lint
+npm test
+npm run build
+```
+
+---
+
 # ギアマッチ（Gear Match）
 
 撮りたいものから、自分にちょうどいい **カメラ・レンズ** を見つけられる多言語Webアプリです。

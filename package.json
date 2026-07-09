@@ -1,7 +1,27 @@
 {
-  "name": "camera-finder-app",
-  "private": true,
-  "version": "0.0.0",
+  "name": "gearmatch",
+  "private": false,
+  "version": "0.1.0",
+  "description": "Open camera and lens recommendation app with multilingual, region-aware search links.",
+  "license": "MIT",
+  "author": "KKKSSS-tech",
+  "homepage": "https://gearmatch-steel.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KKKSSS-tech/gearmatch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KKKSSS-tech/gearmatch/issues"
+  },
+  "keywords": [
+    "camera",
+    "lens",
+    "recommendation",
+    "photography",
+    "react",
+    "vite",
+    "i18n"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
