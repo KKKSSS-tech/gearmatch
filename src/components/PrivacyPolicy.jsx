@@ -76,8 +76,8 @@ function PrivacyPolicy({ lang, t, onClose }) {
               </p>
               <h3>1. 利用するデータ</h3>
               <p>
-                選択内容（言語・地域・予算・用途など）は、結果を表示するためにお使いのブラウザ内でのみ利用され、
-                サーバーには送信されません。一部の設定（同意状態など）はブラウザの localStorage に保存されます。
+                診断結果の計算は、お使いのブラウザ内で行います。一部の設定（同意状態など）はブラウザの
+                localStorage に保存されます。アクセス解析が設定されている場合、操作イベントに選択項目などが含まれることがあります。
               </p>
               <h3>2. 広告について</h3>
               <p>
@@ -89,7 +89,7 @@ function PrivacyPolicy({ lang, t, onClose }) {
               <h3>3. アクセス解析</h3>
               <p>
                 利用状況の把握のため、Cookie を使わないプライバシー配慮型のアクセス解析（Plausible 等）を
-                用いる場合があります。個人を特定する情報は収集しません。
+                用いる場合があります。外部サービスへの通信や設定に応じた計測の詳細は、下記の詳しいポリシーをご確認ください。
               </p>
               <h3>4. 外部サイトへのリンク</h3>
               <p>
@@ -98,7 +98,7 @@ function PrivacyPolicy({ lang, t, onClose }) {
               </p>
               <h3>5. お問い合わせ・改定</h3>
               <p>
-                本ポリシーは予告なく改定されることがあります。ご不明点は運営者までお問い合わせください。
+                詳しい取り扱いと公開の問い合わせ先は<a href="/privacy.html">プライバシーとお問い合わせ</a>をご覧ください。
               </p>
             </>
           ) : (
@@ -110,9 +110,9 @@ function PrivacyPolicy({ lang, t, onClose }) {
               </p>
               <h3>1. Data we use</h3>
               <p>
-                Your selections (language, region, budget, use case, etc.) are used only within your browser to
-                produce results and are not sent to our servers. Some settings (such as your consent choice) are
-                stored in your browser’s localStorage.
+                Recommendation calculations run in your browser. Some settings (such as your consent choice)
+                are stored in your browser’s localStorage. If analytics is configured, interaction events may
+                include selected options.
               </p>
               <h3>2. Advertising</h3>
               <p>
@@ -122,8 +122,8 @@ function PrivacyPolicy({ lang, t, onClose }) {
               </p>
               <h3>3. Analytics</h3>
               <p>
-                We may use privacy-friendly, cookieless analytics (e.g. Plausible) to understand usage. No
-                personally identifying information is collected.
+                We may use cookieless analytics (e.g. Plausible) to understand usage. See the detailed policy below
+                for external requests and measurement that depends on the site's configuration.
               </p>
               <h3>4. Links to external sites</h3>
               <p>
@@ -133,7 +133,7 @@ function PrivacyPolicy({ lang, t, onClose }) {
               </p>
               <h3>5. Contact &amp; changes</h3>
               <p>
-                This policy may be updated without notice. For questions, please contact the operator.
+                See <a href="/privacy.html#english">Privacy &amp; contact</a> for details and our public contact channel.
               </p>
             </>
           )}

@@ -6,13 +6,13 @@ import { adsEnabled, getConsent, setConsent } from '../lib/thirdParty'
 //   t        … 辞書（多言語の文言）
 //   onPrivacy… プライバシーポリシーを開くコールバック
 function ConsentBanner({ t, onPrivacy }) {
-  const [visible, setVisible] = useState(() => adsEnabled && getConsent() === null)
+  const [visible] = useState(() => adsEnabled && getConsent() === null)
   if (!visible) return null
 
-  // オプトアウト方式：広告は既定で読み込み済み。同意はそのまま閉じるだけ、拒否は再読込で広告を止める。
+  // Reload so the loader and any configured unit see the same explicit choice.
   const accept = () => {
     setConsent('granted')
-    setVisible(false)
+    window.location.reload()
   }
   const decline = () => {
     setConsent('denied')

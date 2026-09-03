@@ -11,7 +11,7 @@ import { CAMERAS } from './data/cameras'
 import { LENSES } from './data/lenses'
 import { STEP_IMAGES, INTRO_SLIDES } from './data/stepImages'
 import { searchCameras, searchLenses, isPriorityForGear } from './lib/search'
-import { track } from './lib/thirdParty'
+import { track, setConsent } from './lib/thirdParty'
 import { formatPrice, toYen, currencySymbol, getBudgetPresets } from './lib/currency'
 import { ja } from './i18n/ja'
 import { en } from './i18n/en'
@@ -322,9 +322,9 @@ function App() {
     })
   }
 
-  const ad = (variant) => (
+  const ad = (variant) => currentKey === 'results' && !researching && variant === 'inline' ? (
     <AdSlot label={t.adLabel} note={t.adNote} variant={variant} />
-  )
+  ) : null
 
   // 予算の選択肢を、選んだ国の通貨で「キリのいい現地金額」として動的に作る。
   // value は内部処理用の円換算値、label は整形済みの現地表記（formatPrice は再適用しない）。
@@ -550,7 +550,6 @@ function App() {
             {results.map((item, i) => (
               <Fragment key={item.name}>
                 <ResultCard item={item} rank={i + 1} region={choices.region} condition={choices.condition} grade={choices.grade} t={t} lang={lang} />
-                {i % 3 === 2 && ad('inline')}
               </Fragment>
             ))}
             {ad('inline')}
@@ -621,7 +620,6 @@ function App() {
             {!isLast && !canGoNext() && (
               <p className="hint" id="next-hint" role="status" aria-live="polite">{t.selectHint}</p>
             )}
-            {ad('inline')}
           </main>
 
           <footer className="nav">
@@ -651,6 +649,11 @@ function App() {
               <a className="footer-link" href={choices.language && choices.language !== 'ja' ? '/en/faq.html' : '/faq.html'}>
                 {t.faqLink}
               </a>
+              <a className="footer-link" href="/field-guide.html">{lang === 'ja' ? '撮影計画と予算の実例' : 'Planning worksheet (Japanese)'}</a>
+              <a className="footer-link" href="/privacy.html">{lang === 'ja' ? '個人情報・お問い合わせ' : 'Privacy & contact'}</a>
+              <button type="button" className="footer-link" onClick={() => { setConsent(''); window.location.reload() }}>
+                {lang === 'ja' ? '広告の同意を変更' : 'Change ad consent'}
+              </button>
               <button type="button" className="footer-link" onClick={() => setPrivacyOpen(true)}>
                 {t.privacyPolicy}
               </button>

@@ -7,7 +7,8 @@
     <meta name="theme-color" content="#0071e3" />
 
     <!-- Google AdSense（所有権の確認＋審査用。承認後はこのスクリプトが広告を配信する） -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9932958665424466" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/learn.css" />
+    <script defer src="/ad-consent.js"></script>
     <meta name="google-adsense-account" content="ca-pub-9932958665424466" />
 
     <!-- SEO：検索エンジンに正しく拾われるための基本メタ。本番ドメイン gearmatchworld.org を設定済み（OG画像 og-image.png は任意で用意）。 -->
@@ -46,6 +47,14 @@
   </head>
   <body>
     <div id="root"></div>
+    <section class="gm-reading" lang="ja" aria-labelledby="reading-title">
+      <h2 id="reading-title">候補を絞ったら、撮影条件と照合する。</h2>
+      <p>Gear Matchは、用途・予算・接続規格などからカメラとレンズの候補を見つける無料の道具です。診断はブラウザ内の登録データを使います。販売店の在庫や価格をリアルタイムに調べるサービスではありません。</p>
+      <p>最初に決めるのは、撮る被写体、撮影する距離、機材全体の予算です。たとえば総予算15万円からレンズ4万5千円、周辺品1万5千円、予備費1万円を取り分けるなら、ボディの上限は8万円です。ボディとレンズの診断は別々なので、結果を組み合わせるときはマウントと総額を確認してください。</p>
+      <p>旅行なら持ち歩ける総重量、子どもの撮影なら動きへの追従、動画なら必要な設定で収録を続けられるかを、候補の公式仕様と試写で確かめます。評価チャートは登録された相対評価であり、統一条件の実測値ではありません。</p>
+      <nav aria-label="選び方の読み物"><a href="/field-guide.html">撮影計画と予算の実例 →</a><a href="/guide.html">カメラ選びの基礎</a><a href="/about.html">計算方法と限界</a><a href="/privacy.html">個人情報・お問い合わせ</a><a href="/en/guide.html" lang="en">English buying guide</a></nav>
+      <noscript><p>診断にはJavaScriptが必要ですが、上記のガイドはJavaScriptなしでも読めます。</p></noscript>
+    </section>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
