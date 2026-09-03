@@ -5,7 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0071e3" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9932958665424466" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/learn.css" />
+    <script defer src="/ad-consent.js"></script>
     <meta name="google-adsense-account" content="ca-pub-9932958665424466" />
     <title>About Gear Match — How Recommendations Work | Gear Match</title>
     <meta
@@ -81,7 +82,7 @@
         <p class="lead">
           Gear Match is a <strong>free camera &amp; lens finder</strong>: answer a few questions and get candidates matched to your budget, use case and region. No account, no paywall — every feature is free.
         </p>
-        <p class="updated">Last updated: July 4, 2026</p>
+        <p class="updated">Last updated: September 3, 2026</p>
 
         <h2>Why this exists</h2>
         <p>
@@ -100,12 +101,12 @@
           <li><strong>Ranking</strong> — candidates are presented in score order, each with a radar chart and the reasons it was picked. You can re-sort by price, release date and more.</li>
         </ol>
         <p>
-          Product data is curated entry by entry. Unreleased products never appear in results — recommending something you cannot buy helps nobody.
+          Results use a maintained dataset. Products with a release year after the current year are excluded, but release month, regional availability and stock are not checked. Chart scores are editorial relative ratings, not measurements from a standardized test.
         </p>
 
         <h2>About the prices (the honest part)</h2>
         <p>
-          Prices shown in results are <strong>estimates</strong>: a reference price multiplied by per-store tendency factors and, when applicable, a used-condition factor. They are not live stock prices. That is why every price is labeled as an estimate and why we always ask you to confirm at the store.
+          Prices shown in results are stored reference prices, multiplied by a fixed used-condition factor when applicable. They are <strong>planning estimates</strong>, not live offers. We do not retrieve or display retailer-specific prices. Follow the retailer links to check current price and availability.
         </p>
         <p>
           Live pricing through official retailer APIs is on the roadmap. Until then, treat the numbers as a yardstick for comparing candidates.
@@ -114,7 +115,7 @@
         <h2>Revenue and independence</h2>
         <ul>
           <li><strong>No affiliate links.</strong> Store links are plain search links with no tracking parameters. We earn nothing regardless of where you buy — so we have no motive to steer you anywhere.</li>
-          <li>Running costs are covered by <strong>ads</strong>, kept visually separate from the finder content.</li>
+          <li>Advertising is the intended revenue model, subject to approval and consent requirements. Ad placements are separate from finder results.</li>
           <li>No manufacturer pays us or influences results. Rankings come from the scoring above, nothing else.</li>
         </ul>
 
@@ -125,7 +126,7 @@
 
         <h2>Data and images</h2>
         <ul>
-          <li>Product data (release years, performance ratings, strength tags) is human-curated and maintained by an automated daily job.</li>
+          <li>Product data consists of stored release years, relative ratings and strength tags. Changes are published on GitHub; daily updates, completeness and availability are not guaranteed.</li>
           <li>Product images come exclusively from Wikipedia / Wikimedia Commons files with clear licensing. Products without a suitable image show a placeholder — current coverage is roughly half the catalog. We would rather show an honest placeholder than the wrong product.</li>
           <li>All manufacturer logos and trademarks belong to their owners. Gear Match is an independent, unofficial site with no manufacturer affiliation.</li>
         </ul>
@@ -137,8 +138,12 @@
 
         <h2>Privacy</h2>
         <p>
-          The finder runs entirely in your browser — your answers are never sent to a server. For details on cookies and advertising, see the Privacy Policy in the footer of the main page.
+          Finder calculations run in your browser. For advertising, optional analytics, external resources and the public contact channel, see our <a href="/privacy.html#english">Privacy &amp; contact page</a>.
         </p>
+
+        <h2>How used-price estimates work</h2>
+        <p>Reference prices are multiplied by fixed factors: A 0.80, AB 0.74, B 0.66, C 0.55, or 0.72 when no grade is selected. Multiple grades use the lowest factor. A reference price of 100,000 yen with A and B selected is therefore estimated at 66,000 yen. This does not mean an A-grade copy is available at that price.</p>
+        <p>The budget filter applies to calculated estimates, not actual checkout totals. Exchange rates are also fixed reference values. Verify current prices, condition definitions, stock, tax, shipping, accessories and mount compatibility with the retailer and manufacturer before buying.</p>
 
         <div class="cta-row">
           <a class="cta" href="/">Start the finder (free, no sign-up)</a>
@@ -153,6 +158,7 @@
         </nav>
         <p>All prices are estimates. Check the latest price at each store. No affiliate links.</p>
         <p>© Gear Match — gearmatchworld.org</p>
+        <p><a href="/privacy.html">Privacy &amp; contact</a> · <a href="/field-guide.html">Planning worksheet (Japanese)</a></p>
       </footer>
     </div>
   </body>

@@ -157,7 +157,7 @@ export const ja = {
   paramValue: 'コスパ',
 
   // 結果カード：価格比較
-  priceCompareTitle: '販売店の価格を比較',
+  priceCompareTitle: '価格・在庫を販売店で確認',
   priceDisclaimer: '※価格は目安です。最新の価格・在庫は各店舗のページでご確認ください。',
   priceFrom: '最安',
   goToStore: '見る',

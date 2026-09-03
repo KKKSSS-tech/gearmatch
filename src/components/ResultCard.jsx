@@ -9,18 +9,6 @@ import { PRODUCT_IMAGES } from '../data/images'
 import { PRODUCT_YEARS } from '../data/years'
 import { STRENGTHS, SENSORS } from '../i18n/strengths'
 
-// 店ごとの「目安価格」を散らすための係数。製品ごとに同じ並びになるよう固定（毎回ブレない）。
-// すべて 1.0 以下にして、新品でも各店の目安価格がヘッドラインの基準価格（＝予算で絞った価格）を超えないようにする。
-const STORE_MULT = [1.0, 0.99, 0.97, 0.985, 0.99, 0.96, 0.95, 0.98, 0.975, 0.965]
-
-// この製品の基準価格から、各店の目安価格を作る（※ダミーの概算。別製品とは混ざらない）
-// 中古ランク係数は search.js の usedFactorFor を共有（フィルタ・スコア・表示でズレないようにするため）
-function estimatePrice(base, i, condition, grade) {
-  const usedFactor = usedFactorFor(condition, grade)
-  const raw = base * usedFactor * STORE_MULT[i % STORE_MULT.length]
-  return Math.round(raw / 100) * 100
-}
-
 // レーダーに出す6項目（順番固定）。ラベルは辞書から。
 function radarData(item, t) {
   const p = item.params || {}
@@ -60,13 +48,9 @@ function ResultCard({ item, rank, region, condition, grade = [], t, lang }) {
   const trSensor = (s) =>
     lang === 'ja' ? s : (SENSORS[s] && SENSORS[s][lang]) || s
 
-  // 各店の目安価格を作る（curated 順のまま。先頭を見出しの基準にも使う）
-  const priced = getStoreLinks(region, item.name, condition)
-    .map((s, i) => ({ ...s, price: estimatePrice(item.price, i, condition, grade) }))
-  // 見出し価格は、表示している各店の目安のうち最も安いものに揃える（行と矛盾させない）
-  const headlinePrice = priced.length
-    ? Math.min(...priced.map((s) => s.price))
-    : estimatePrice(item.price, 0, condition, grade)
+  // Retailer links are search destinations, not observed offers. Never fabricate store prices.
+  const stores = getStoreLinks(region, item.name, condition)
+  const headlinePrice = Math.round(item.price * usedFactorFor(condition, grade) / 100) * 100
 
   const yearText = year ? `${year}${lang === 'ja' ? '年' : ''}` : ''
   // サブライン（メーカー ・ センサー ・ マウント ・ 年）。空の要素は混ぜず ・ で連結（区切りの重複防止）
@@ -149,23 +133,16 @@ function ResultCard({ item, rank, region, condition, grade = [], t, lang }) {
         )}
       </div>
 
-      {/* 価格比較：既定は折りたたみ（目安の最安だけ見せてスクロール削減）。開くと全店舗。 */}
-      {/* ※各店の数値は固定係数の概算なので、特定店を「最安の実売」と断定せず、目安の下限だけ示す */}
+      {/* Current prices and availability must be checked at each retailer. */}
       <details className="price-table">
         <summary className="price-summary">
           <span className="price-summary-title">{t.priceCompareTitle}</span>
-          {priced.length > 0 && (
-            <span className="price-summary-cheapest">
-              {t.priceFrom} {formatPrice(headlinePrice, region)}
-            </span>
-          )}
           <Icon name="chevron" size={16} className="price-summary-chevron" />
         </summary>
         <ul className="price-rows">
-          {priced.map((s) => (
+          {stores.map((s) => (
             <li key={s.name} className="price-row">
               <span className="price-store">{s.name}</span>
-              <span className="price-amount">{formatPrice(s.price, region)}</span>
               <a
                 className="price-go"
                 href={s.url}

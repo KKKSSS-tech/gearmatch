@@ -49,6 +49,12 @@
   align-items: start;
 }
 
+/* Do not reserve empty advertising columns before an actual unit exists. */
+.layout:not(:has(> .ad-side)) {
+  grid-template-columns: minmax(0, 760px);
+  justify-content: center;
+}
+
 /* タブレット〜小型ノート：両サイド広告は残しつつ細くして、中央が潰れないように */
 @media (max-width: 1100px) {
   .layout {
@@ -789,7 +795,7 @@ html:lang(zh) .logo-text {
 }
 .price-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 10px;
   padding: 9px 12px;

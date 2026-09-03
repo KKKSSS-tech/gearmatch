@@ -1,20 +1,19 @@
 // 外部スクリプト（広告 / アクセス解析）の読み込み制御。
-// 環境変数が設定されているときだけ有効化する＝未設定の開発中は広告プレースホルダのまま・解析も無し。
-//   VITE_ADSENSE_CLIENT … Google AdSense のパブリッシャーID（ca-pub-XXXX）。これがあると本番広告が出せる。
-//   VITE_ADSENSE_SLOT   … （任意）広告ユニットのスロットID。無ければ自動広告フォーマット。
-//   VITE_PLAUSIBLE_DOMAIN … （任意）Plausible のドメイン。cookieレスなのでEUでも同意不要で計測できる。
+// Publisher metadata verifies ownership; delivery still requires Google approval.
+// VITE_ADSENSE_SLOT is required for manual units. Empty slots are not Auto ads.
+// Google-certified regional CMP configuration is separate from local opt-in.
 
-export const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || ''
+export const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || 'ca-pub-9932958665424466'
 export const ADSENSE_SLOT = import.meta.env.VITE_ADSENSE_SLOT || ''
 export const PLAUSIBLE_DOMAIN = import.meta.env.VITE_PLAUSIBLE_DOMAIN || ''
 
-// 広告が「設定済み（出せる状態）」か。これが false の間は同意バナーも出さない（無意味なため）。
+// Configured publisher ID does not mean that Google has approved the site.
 export const adsEnabled = !!ADSENSE_CLIENT
 
-const CONSENT_KEY = 'gm-consent' // 'granted' | 'denied'
+const CONSENT_KEY = 'gm-consent-v2' // Reset legacy opt-out choices; ask explicitly.
 export function getConsent() {
   try {
-    return localStorage.getItem(CONSENT_KEY)
+    return localStorage.getItem(CONSENT_KEY) || null
   } catch {
     return null
   }
@@ -28,9 +27,13 @@ export function setConsent(value) {
 }
 
 let adsLoaded = false
-// AdSense ローダーを1回だけ読み込む（同意が得られてから呼ぶ＝EU配慮）。
+// Load once after opt-in; this does not replace Google's certified regional CMP.
 export function loadAdSense() {
-  if (adsLoaded || !ADSENSE_CLIENT) return
+  if (adsLoaded || !ADSENSE_CLIENT || getConsent() !== 'granted') return
+  if (document.querySelector('script[src*="pagead/js/adsbygoogle.js"]')) {
+    adsLoaded = true
+    return
+  }
   adsLoaded = true
   const s = document.createElement('script')
   s.async = true
@@ -63,10 +66,9 @@ export function track(event, props) {
   }
 }
 
-// 起動時の初期化：解析は常時。広告は「設定済み」かつ「明示的に拒否されていない」なら読み込む
-// （＝オプトアウト方式。AdSense審査クローラにも広告コードが見え、承認を通しやすい）。
-// ※ EUの厳格な同意管理が必要になったら、Google認定CMPの導入を検討（README参照）。
+// Do not request advertising until the visitor explicitly opts in.
+// Site verification remains available through the static publisher meta tag.
 export function initThirdParty() {
   loadPlausible()
-  if (adsEnabled && getConsent() !== 'denied') loadAdSense()
+  if (adsEnabled && getConsent() === 'granted') loadAdSense()
 }

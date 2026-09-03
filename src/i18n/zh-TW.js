@@ -155,7 +155,7 @@ export const zhTW = {
   paramValue: 'CP值',
 
   // 結果卡片：價格比較
-  priceCompareTitle: '比較各店價格',
+  priceCompareTitle: '前往商店確認價格與庫存',
   priceDisclaimer: '※價格僅供參考，最新價格與庫存請以各店頁面為準。',
   priceFrom: '最低',
   goToStore: '查看',

@@ -155,7 +155,7 @@ export const es = {
   paramValue: 'Valor',
 
   // Tarjeta de resultado: comparación de precios
-  priceCompareTitle: 'Comparar precios en tiendas',
+  priceCompareTitle: 'Consultar precio y disponibilidad',
   priceDisclaimer: '* Los precios son estimados. Consulta cada tienda para precio y disponibilidad actualizados.',
   priceFrom: 'desde',
   goToStore: 'Ver',

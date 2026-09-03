@@ -155,7 +155,7 @@ export const fr = {
   paramValue: 'Rapport Q/P',
 
   // Carte résultat : comparaison des prix
-  priceCompareTitle: 'Comparer les prix des boutiques',
+  priceCompareTitle: 'Vérifier le prix et la disponibilité',
   priceDisclaimer: '* Les prix sont indicatifs. Vérifie le prix et la disponibilité sur chaque page boutique.',
   priceFrom: 'à partir de',
   goToStore: 'Voir',
