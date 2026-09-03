@@ -1,5 +1,17 @@
 # Gear Match AdSense follow-up — 2026-09-03
 
+## Latest outcome: re-review ACCEPTED, approval PENDING
+
+- September 3 around 22:03 JST: after verifying the live changes, submitted the new review request in AdSense. The dashboard changed from 要確認 to 準備中 and 審査待ち. This is application acceptance, NOT advertising approval.
+- PR #13 was merged and deployed successfully to production: 7442ae80d3f595fd467682b20b1dbdfbea3061b1. Live JS/CSS matched the tested build. Homepage, field guide, privacy, ads.txt, robots and sitemap returned 200; a made-up path returned 404.
+- The in-app browser is authenticated to AdSense and can continue this work. The earlier Chrome-only blocker no longer applies.
+- Google Privacy & messaging already has a PUBLISHED European regulations message for gearmatchworld.org, updated June 8, covering English and 31 other languages. No replacement CMP was needed. Runtime appearance in the applicable regions remains an approval-follow-up check.
+- Auto ads showed no site row and there were no existing manual units. Created a responsive display unit named `Gear Match - Results responsive`; Google confirmed creation and supplied slot `9120553910` with client `ca-pub-9932958665424466`.
+- This follow-up configures that real slot as the default for the single result-end placement after explicit consent. Unfilled units are hidden; no dummy retailer prices or ad placeholders are introduced. Static article pages remain readable and ad-free unless Auto ads is separately configured.
+- Daily 10:00 JST heartbeat `gear-match-adsense` is active. Next work is to check the pending review, verify real serving after approval (never click ads), or diagnose a new rejection before making further changes/resubmitting. Do not blindly submit again while pending.
+
+The historical notes below explain the work; this latest outcome supersedes their incomplete-state statements.
+
 ## Later progress on September 3 (supersedes the initial browser blocker below)
 
 The in-app browser recovered; authenticated Chrome did not. Draft review: https://github.com/KKKSSS-tech/gearmatch/pull/13. The initial branch preview passed Vercel deployment.

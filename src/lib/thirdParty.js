@@ -1,10 +1,10 @@
 // 外部スクリプト（広告 / アクセス解析）の読み込み制御。
 // Publisher metadata verifies ownership; delivery still requires Google approval.
-// VITE_ADSENSE_SLOT is required for manual units. Empty slots are not Auto ads.
+// Default manual unit was created in this publisher account on 2026-09-03.
 // Google-certified regional CMP configuration is separate from local opt-in.
 
 export const ADSENSE_CLIENT = import.meta.env.VITE_ADSENSE_CLIENT || 'ca-pub-9932958665424466'
-export const ADSENSE_SLOT = import.meta.env.VITE_ADSENSE_SLOT || ''
+export const ADSENSE_SLOT = import.meta.env.VITE_ADSENSE_SLOT || '9120553910'
 export const PLAUSIBLE_DOMAIN = import.meta.env.VITE_PLAUSIBLE_DOMAIN || ''
 
 // Configured publisher ID does not mean that Google has approved the site.
