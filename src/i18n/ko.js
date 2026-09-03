@@ -152,7 +152,7 @@ export const ko = {
   paramStabilization: '손떨림 보정',
   paramValue: '가성비',
 
-  priceCompareTitle: '판매점 가격 비교',
+  priceCompareTitle: '판매점에서 가격과 재고 확인',
   priceDisclaimer: '※ 가격은 참고용입니다. 최신 가격·재고는 각 상점 페이지에서 확인하세요.',
   priceFrom: '최저',
   goToStore: '보기',

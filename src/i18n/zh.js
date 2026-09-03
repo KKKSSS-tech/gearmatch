@@ -155,7 +155,7 @@ export const zh = {
   paramValue: '性价比',
 
   // 结果卡片：价格比较
-  priceCompareTitle: '比较各店价格',
+  priceCompareTitle: '前往商店确认价格和库存',
   priceDisclaimer: '※价格仅供参考，最新价格及库存请以各店铺页面为准。',
   priceFrom: '最低',
   goToStore: '查看',

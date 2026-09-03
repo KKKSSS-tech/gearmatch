@@ -7,6 +7,18 @@ const source = (path) => readFileSync(new URL(`../../../${path}`, import.meta.ur
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.resetModules() })
 
 describe('publisher readiness', () => {
+  it('shows the stored planning price without fabricated retailer quotes', async () => {
+    const { default: ResultCard } = await import('../../components/ResultCard.jsx')
+    const { ja } = await import('../../i18n/ja.js')
+    const html = renderToStaticMarkup(createElement(ResultCard, {
+      item: { name: 'Test Camera', brand: 'Test', price: 100000 }, rank: 1,
+      region: 'JP', condition: 'used', grade: ['A', 'B'], t: ja, lang: 'ja',
+    }))
+    expect(html).toContain('66,000')
+    expect(html).not.toContain('price-amount')
+    expect(html).not.toContain('price-summary-cheapest')
+    expect(html).not.toContain('最安')
+  })
   it('keeps verification metadata without unconditional ad requests on entry pages', () => {
     for (const file of ['index.html', 'public/about.html', 'public/guide.html', 'public/faq.html', 'public/en/about.html', 'public/en/guide.html', 'public/en/faq.html', 'public/field-guide.html', 'public/privacy.html']) {
       const html = source(file)

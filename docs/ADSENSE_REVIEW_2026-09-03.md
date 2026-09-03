@@ -1,5 +1,19 @@
 # Gear Match AdSense follow-up — 2026-09-03
 
+## Later progress on September 3 (supersedes the initial browser blocker below)
+
+The in-app browser recovered; authenticated Chrome did not. Draft review: https://github.com/KKKSSS-tech/gearmatch/pull/13. The initial branch preview passed Vercel deployment.
+
+Desktop (1280px) and mobile (390px) renders were inspected for the homepage, finder results, original guide, privacy page and JP/EN article templates. The finder completed all four steps on desktop and mobile. Retailer links expanded correctly. No horizontal overflow was found on the six article routes at 390px.
+
+Visual QA exposed an additional content problem: deterministic store multipliers were presented as retailer-specific prices and a lowest-price label. These fabricated comparisons were removed; the headline now uses the stored reference price with only the documented used-condition factor, and shops are search links without claimed live prices. All eight locale headings and JP/EN explanatory copy/FAQ structured data were aligned. The final regression suite has 106 passing tests.
+
+Consent was verified through the real UI: no loader before a choice, one after opt-in, one on an article with the same choice, and none after reset/decline. No real ads were clicked. The custom opt-in still does not replace a Google-certified regional CMP.
+
+Focused visual critique, cycle 2: pass for the content/layout changes (not AdSense readiness). Scores: purpose 5, hierarchy 4, recognition 4, coherence 5, typography 4, contrast 4, accessibility 4, production feasibility 4; new motion N/A. Weighted score 85.9/100. Strong points: existing identity preserved, guide's worksheet hierarchy, responsive readable layouts. The misleading price issue found in cycle 1 was fixed and the results and FAQ re-rendered. No remaining visual release blocker was observed in changed surfaces.
+
+Content changes may now be released independently of ad-serving setup. AdSense re-review and certified CMP/Auto ads verification still require access to the authenticated Google dashboard. Keep this distinction explicit; content deployment alone does not mean advertising is approved or ready.
+
 ## Verified current outcome
 
 - Production: https://www.gearmatchworld.org/

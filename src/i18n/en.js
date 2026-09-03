@@ -156,7 +156,7 @@ export const en = {
   paramValue: 'Value',
 
   // Result card: price comparison
-  priceCompareTitle: 'Compare store prices',
+  priceCompareTitle: 'Check price and stock at retailers',
   priceDisclaimer: '* Prices are estimates. Check each store page for the latest price and stock.',
   priceFrom: 'from',
   goToStore: 'View',

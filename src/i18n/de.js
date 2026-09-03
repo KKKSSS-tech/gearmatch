@@ -155,7 +155,7 @@ export const de = {
   paramValue: 'Preis-Leistung',
 
   // Ergebniskarte: Preisvergleich
-  priceCompareTitle: 'Shoppreise vergleichen',
+  priceCompareTitle: 'Preis und Verfügbarkeit im Shop prüfen',
   priceDisclaimer: '* Preise sind Richtwerte. Aktuelle Preise und Verfügbarkeit bitte beim jeweiligen Shop prüfen.',
   priceFrom: 'ab',
   goToStore: 'Ansehen',
