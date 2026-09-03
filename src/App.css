@@ -563,6 +563,8 @@ html:lang(zh) .logo-text {
 /* ───────── 結果：並び替えツールバー ───────── */
 .results {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 16px;
 }
 .results-toolbar {
@@ -849,7 +851,7 @@ html:lang(zh) .logo-text {
   margin: 12px 0 0;
 }
 
-/* ───────── 広告の枠（多めに配置・ライト調） ───────── */
+/* ───────── 広告の枠 ───────── */
 .ad-slot {
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
@@ -909,6 +911,17 @@ html:lang(zh) .logo-text {
 }
 
 /* ───────── 下部の戻る／次へ ───────── */
+ins.adsbygoogle.ad-slot {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-decoration: none;
+}
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+
 .nav {
   display: flex;
   justify-content: space-between;

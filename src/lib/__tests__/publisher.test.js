@@ -52,9 +52,23 @@ describe('publisher readiness', () => {
     loadAdSense(); loadAdSense()
     expect(appendChild).toHaveBeenCalledTimes(1)
   })
-  it('does not create a manual unit without a slot ID', async () => {
+  it('does not create a manual unit when explicitly disabled', async () => {
+    vi.stubEnv('VITE_ADSENSE_SLOT', 'disabled')
+    vi.stubGlobal('localStorage', { getItem: () => 'granted' })
+    const { default: AdSlot } = await import('../../components/AdSlot.jsx')
+    expect(renderToStaticMarkup(createElement(AdSlot))).toBe('')
+  })
+  it('uses the verified publisher unit after explicit consent', async () => {
     vi.stubEnv('VITE_ADSENSE_SLOT', '')
     vi.stubGlobal('localStorage', { getItem: () => 'granted' })
+    const { default: AdSlot } = await import('../../components/AdSlot.jsx')
+    const html = renderToStaticMarkup(createElement(AdSlot))
+    expect(html).toContain('data-ad-slot="9120553910"')
+    expect(html).toContain('data-ad-client="ca-pub-9932958665424466"')
+    expect(html).toContain('data-full-width-responsive="false"')
+  })
+  it('does not render the configured unit before consent', async () => {
+    vi.stubGlobal('localStorage', { getItem: () => null })
     const { default: AdSlot } = await import('../../components/AdSlot.jsx')
     expect(renderToStaticMarkup(createElement(AdSlot))).toBe('')
   })
