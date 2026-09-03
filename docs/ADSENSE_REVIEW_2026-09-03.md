@@ -8,6 +8,7 @@
 - Google Privacy & messaging already has a PUBLISHED European regulations message for gearmatchworld.org, updated June 8, covering English and 31 other languages. No replacement CMP was needed. Runtime appearance in the applicable regions remains an approval-follow-up check.
 - Auto ads showed no site row and there were no existing manual units. Created a responsive display unit named `Gear Match - Results responsive`; Google confirmed creation and supplied slot `9120553910` with client `ca-pub-9932958665424466`.
 - This follow-up configures that real slot as the default for the single result-end placement after explicit consent. Unfilled units are hidden; no dummy retailer prices or ad placeholders are introduced. Static article pages remain readable and ad-free unless Auto ads is separately configured.
+- The mobile ad-connected smoke test exposed full-screen expansion affecting the results grid. Use Google's documented `data-full-width-responsive="false"` and an explicit minmax(0, 1fr) results column so the unit remains within the content width. Reference: https://support.google.com/adsense/answer/9183460?hl=en . The suite now has 108 passing tests.
 - Daily 10:00 JST heartbeat `gear-match-adsense` is active. Next work is to check the pending review, verify real serving after approval (never click ads), or diagnose a new rejection before making further changes/resubmitting. Do not blindly submit again while pending.
 
 The historical notes below explain the work; this latest outcome supersedes their incomplete-state statements.

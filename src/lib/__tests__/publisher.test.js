@@ -65,6 +65,7 @@ describe('publisher readiness', () => {
     const html = renderToStaticMarkup(createElement(AdSlot))
     expect(html).toContain('data-ad-slot="9120553910"')
     expect(html).toContain('data-ad-client="ca-pub-9932958665424466"')
+    expect(html).toContain('data-full-width-responsive="false"')
   })
   it('does not render the configured unit before consent', async () => {
     vi.stubGlobal('localStorage', { getItem: () => null })

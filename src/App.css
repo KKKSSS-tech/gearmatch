@@ -563,6 +563,8 @@ html:lang(zh) .logo-text {
 /* ───────── 結果：並び替えツールバー ───────── */
 .results {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 16px;
 }
 .results-toolbar {
